@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerAditionalData
+from .models import CustomerAditionalData, Orders, OrderDetail
 
 class ClienteDatosAdicionalesForm(forms.ModelForm):
     class Meta:
@@ -22,3 +22,13 @@ class ClienteDatosAdicionalesForm(forms.ModelForm):
             'civil_status':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Lugar Vivienda:'}),
             'interest_categories':forms.Select(attrs={'class': 'form-control mb-3', 'placeholder': 'Hijos:'}),
         }
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Orders
+        fields = ['customer_id', 'order_date', 'shipped_date', 'payment_date']
+
+class OrderDetailForm(forms.ModelForm):
+    class Meta:
+        model = OrderDetail
+        fields = ['order_number', 'product_id', 'quantity', 'price']
