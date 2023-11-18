@@ -43,63 +43,9 @@ class Orders(models.Model):
 
 class OrderDetail(models.Model):
     order_number = models.ForeignKey(Orders, on_delete=models.CASCADE, primary_key=True)
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE, primary_key=True)
+    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"Order {self.order_number} - Product {self.product_id}"
-    
-class Children(models.Model):
-    children_id =  models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    birth_date = models.DateField()
-    genre = models.CharField(max_length=50)
-    study = models.BooleanField(default=False)
-    play_videogames = models.BooleanField(default=False)
-    videogames_platform = models.TextField(blank=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-class BirthPlace(models.Model):
-    birth_id =  models.AutoField(primary_key=True)
-    city = models.CharField(max_length=100)
-    region = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"Lugar de Nacimiento - {self.ciudad}, {self.departamento_estado}, {self.pais}"
-
-class PlaceLocation(models.Model):
-    place_id = models.AutoField(primary_key=True)
-    ciudad = models.CharField(max_length=100)
-    region = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
-
-class CivilStatus(models.Model):
-    status_id = models.AutoField(primary_key=True)
-    status_type = models.CharField(max_length=100)
-    date = models.DateField()
-
-    def __str__(self):
-        return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
-
-class CustomerAditionalData(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
-    children = models.ManyToManyField(Children, blank=True)
-    birth_place = models.ManyToManyField(BirthPlace, blank=True)
-    place_location = models.ManyToManyField(PlaceLocation, blank=True)
-    hobbies = models.TextField(blank=True)
-    sports = models.TextField(blank=True)
-    civil_status = models.CharField(max_length=50, blank=True)
-    interest_categories = models.ManyToManyField(CategoryProducts, blank=True)
-
-    def __str__(self):
-        return f"{self.customer.email} - Datos Adicionales"
-
-

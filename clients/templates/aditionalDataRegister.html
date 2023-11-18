@@ -7,7 +7,13 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Enviar</button>
+        {{ children_formset.management_form }}
+        {% for children_form in children_formset %}
+            {{ children_form.as_p }}
+        {% endfor %}
+        {{ birth_place_form.as_p }}
+        {{ place_location_form.as_p }}
+        <button type="submit">Guardar</button>
     </form>
 </body>
 </html>
