@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+0001_initial.py
 
 # Distribution / packaging
 .Python
