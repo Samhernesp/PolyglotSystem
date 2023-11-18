@@ -31,16 +31,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'clients',
+    'accounts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'clients'
 ]
 
 MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'polyglotSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +69,7 @@ TEMPLATES = [
             ],
         },
     },
+
 ]
 
 WSGI_APPLICATION = 'polyglotSystem.wsgi.application'
