@@ -42,8 +42,8 @@ class Orders(models.Model):
         return f"Order {self.order_number} by {self.customer_id}"
 
 class OrderDetail(models.Model):
-    order_number = models.ForeignKey(Orders, on_delete=models.CASCADE)
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
+    order_number = models.ForeignKey(Orders, on_delete=models.CASCADE, primary_key=True)
+    product_id = models.ForeignKey(Products, on_delete=models.CASCADE, primary_key=True)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -51,6 +51,7 @@ class OrderDetail(models.Model):
         return f"Order {self.order_number} - Product {self.product_id}"
     
 class Children(models.Model):
+    children_id =  models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     birth_date = models.DateField()
     genre = models.CharField(max_length=50)
@@ -62,6 +63,7 @@ class Children(models.Model):
         return f"{self.name}"
 
 class BirthPlace(models.Model):
+    birth_id =  models.AutoField(primary_key=True)
     city = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
@@ -70,6 +72,7 @@ class BirthPlace(models.Model):
         return f"Lugar de Nacimiento - {self.ciudad}, {self.departamento_estado}, {self.pais}"
 
 class PlaceLocation(models.Model):
+    place_id = models.AutoField(primary_key=True)
     ciudad = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
@@ -78,6 +81,13 @@ class PlaceLocation(models.Model):
     def __str__(self):
         return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
 
+class CivilStatus(models.Model):
+    status_id = models.AutoField(primary_key=True)
+    status_type = models.CharField(max_length=100)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
 
 class CustomerAditionalData(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
