@@ -6,14 +6,9 @@
 <body>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        {{ children_formset.management_form }}
-        {% for children_form in children_formset %}
-            {{ children_form.as_p }}
-        {% endfor %}
-        {{ birth_place_form.as_p }}
-        {{ place_location_form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
+        {{ client_form.as_p }}
+       
+        <button type="submit">Register</button>
+    </form>    
 </body>
 </html>
