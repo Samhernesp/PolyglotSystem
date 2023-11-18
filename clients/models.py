@@ -69,17 +69,17 @@ class BirthPlace(models.Model):
     country = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Lugar de Nacimiento - {self.ciudad}, {self.departamento_estado}, {self.pais}"
+        return f"Lugar de Nacimiento - {self.city}, {self.region}, {self.country}"
 
 class PlaceLocation(models.Model):
     place_id = models.AutoField(primary_key=True)
-    ciudad = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
+        return f"Ubicación - {self.city}, {self.region}, {self.country}, {self.postal_code}"
 
 class CivilStatus(models.Model):
     status_id = models.AutoField(primary_key=True)
@@ -87,16 +87,16 @@ class CivilStatus(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return f"Ubicación - {self.ciudad}, {self.departamento_region_estado}, {self.pais}"
+        return f"Ubicación - {self.status_type}, {self.date}"
 
 class CustomerAditionalData(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE) 
-    children = models.ManyToManyField(Children, blank=True)
+    children = models.ForeignKey(Children,on_delete=models.CASCADE, blank=True)
     birth_place = models.ManyToManyField(BirthPlace, blank=True)
     place_location = models.ManyToManyField(PlaceLocation, blank=True)
     hobbies = models.TextField(blank=True)
     sports = models.TextField(blank=True)
-    civil_status = models.CharField(max_length=50, blank=True)
+    civil_status = models.ManyToManyField(CivilStatus, blank=True)
     interest_categories = models.ManyToManyField(CategoryProducts, blank=True)
 
     def __str__(self):

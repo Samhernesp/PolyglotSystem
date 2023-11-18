@@ -1,26 +1,48 @@
 from django import forms
-from .models import CustomerAditionalData, Orders, OrderDetail
+from .models import CustomerAditionalData, Orders, OrderDetail, Children, BirthPlace, PlaceLocation, CivilStatus
+from django.forms import inlineformset_factory
+
+class ChildrenForm(forms.ModelForm):
+    class Meta:
+        model = Children
+        fields = ['name', 'birth_date', 'genre', 'study', 'play_videogames','videogames_platform']
+
+class BirthPlaceForm(forms.ModelForm):
+    class Meta:
+        model = BirthPlace
+        fields = ['city', 'region', 'country']
+
+class PlaceLocationForm(forms.ModelForm):
+    class Meta:
+        model = PlaceLocation
+        fields = ['city', 'region', 'country', 'postal_code']
+
+class CivilStatusForm(forms.ModelForm):
+    class Meta:
+        model = CivilStatus
+        fields = ['status_type', 'date']
+
+ChildrenFormset = inlineformset_factory(
+    Children, CustomerAditionalData, 
+    form=ChildrenForm, 
+    extra=1,
+    can_delete=True
+)
 
 class ClienteDatosAdicionalesForm(forms.ModelForm):
     class Meta:
         model = CustomerAditionalData
         fields = [
-            'children',
-            'birth_place',
-            'place_location',
+            'customer',
             'hobbies',
             'sports',
-            'civil_status',
-            'interest_categories',
+            'interest_categories'
         ]
         widgets = {
-            'children':forms.Select(attrs={'class': 'form-control mb-3', 'placeholder': 'Hijos:'}),
-            'birth_place':forms.Select(attrs={'type': 'date','class': 'form-control', 'placeholder': 'Fecha nacimiento:'}),
-            'place_location':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Lugar Vivienda:'}),
-            'hobbies':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Hijos:'}),
-            'sports':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Lugar nacimiento:'}),
-            'civil_status':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Lugar Vivienda:'}),
-            'interest_categories':forms.Select(attrs={'class': 'form-control mb-3', 'placeholder': 'Hijos:'}),
+            'customer':forms.Select(attrs={'class': ''}),
+            'hobbies':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Hobbies:'}),
+            'sports':forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Deportes:'}),
+            'interest_categories':forms.Select(attrs={'class': ''})
         }
 
 class OrderForm(forms.ModelForm):
