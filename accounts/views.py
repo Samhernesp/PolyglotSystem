@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout
+
+from clients.models import Customer 
 from .forms import UserCreationForm, LoginForm
 
 def user_signup(request):
@@ -21,7 +23,8 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
-                return redirect('registerOrder')
+                customer = Customer.objects.all().filter(user=user).first
+                return redirect('/registerOrder?user={{customer.customer_id}}')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
