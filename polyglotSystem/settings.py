@@ -74,6 +74,10 @@ WSGI_APPLICATION = 'polyglotSystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+import mongoengine 
+uri = "mongodb+srv://client:client@polyglotsystem.eflgdph.mongodb.net/?retryWrites=true&w=majority"
+mongoengine.connect('customers',host=uri)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -82,6 +86,14 @@ DATABASES = {
         'PASSWORD': 'laLuchaEsMucha!',
         'HOST': 'db.oavfgxephannrmlgfpqx.supabase.co',
         'PORT': '5432'
+    },
+    'mongo': {
+        'ENGINE': 'djongo',
+        'NAME': 'customers',
+        'USER' : 'client',
+        'HOST': 'mongodb+srv://client:client@polyglotsystem.eflgdph.mongodb.net/customer',
+        'RETRY_WRITES': 'true',
+        'W': 'majority',
     }
 }
 
