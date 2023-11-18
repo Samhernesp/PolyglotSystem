@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrar Detalle de Orden</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Registrar Detalle de Orden</button>
+</form>
+</body>
+</html>
