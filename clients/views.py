@@ -73,12 +73,12 @@ class ClientRegistrationView(View):
                 # Hobbies
                 hobbies = cleaned_data.get('hobbies')
                 if hobbies:
-                    client.hobbies.append(hobbies)
+                    client.hobbies = hobbies.split(',')
 
                 # Sports
                 sports = cleaned_data.get('sports')
                 if sports:
-                    client.sports.append(sports)
+                    client.sports = sports.split(',')
 
                 # Civil Status
                 civil_status = cleaned_data.get('civil_status')

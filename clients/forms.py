@@ -1,5 +1,5 @@
 from django import forms
-from .models import Orders, OrderDetail
+from .models import Orders, OrderDetail, CategoryProducts
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -13,8 +13,14 @@ class OrderDetailForm(forms.ModelForm):
 
 class ChildrenForm(forms.Form):
     name = forms.CharField(required=False)
-    born_date = forms.DateTimeField(required=False)
-    genre = forms.CharField(required=False)
+    born_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+    genre = forms.ChoiceField(
+        choices=[('Hombre', 'Hombre'), ('Mujer', 'Mujer')],
+        required=False
+    )
     study = forms.BooleanField(required=False, initial=False)
     play_videogames = forms.BooleanField(required=False, initial=False)
     videogames_platforms = forms.CharField(required=False)
@@ -29,6 +35,12 @@ class ClientForm(forms.Form):
     hobbies = forms.CharField(required=False)  
     sports = forms.CharField(required=False)
     civil_status = forms.CharField(required=False)
-    civil_status_date = forms.DateTimeField(required=False)
-    categories_of_interest = forms.CharField(required=False)
-
+    civil_status_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+    categories_of_interest = forms.ModelMultipleChoiceField(
+        queryset=CategoryProducts.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
