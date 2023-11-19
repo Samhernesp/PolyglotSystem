@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from .forms import OrderForm, OrderDetailForm
-from .models import OrderDetail, Orders
+from .models import OrderDetail, Orders, Customer
 from .forms import ClientForm, ChildrenForm, ClientPlaceForm
 from .mongo_models import Client, Children, ClientPlace
 
@@ -11,6 +11,17 @@ class RegisterOrderView(View):
     
 
     def get(self, request):
+<<<<<<< HEAD
+=======
+        # !!!!!!!!!!!!!!!!!!!
+        # HEYEHEYEHYEHEY ESTA ES LA ID DEL CUSTOMEEEEEEER
+
+        customer_id = self.request.GET.get("user")
+        print(customer_id)
+        # HEYEHEYEHYEHEY ESTA ES LA ID DEL CUSTOMEEEEEEER
+        # !!!!!!!!!!!!!!!!!!!
+
+>>>>>>> 554749999833979d4c9b371d03af9e1da5a01889
         form = self.form_class()
         return render(request, 'registerOrder.html', {'form': form})
 
@@ -60,14 +71,48 @@ class ClientRegistrationView(View):
         return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})
 
     def post(self, request):
-        client_form = ClientForm(request.POST)
+        
+        customer = Customer.objects.filter(user=request.user).first()
+        client = Client.objects(client_id=str(customer.customer_id)).first()
+
+        if request.POST.get("form_type") == "form1":
+            client_form = ClientForm(request.POST)
+            if client_form.is_valid():
+                cleaned_data = client_form.cleaned_data
+
+                # Hobbies
+                hobbies = cleaned_data.get('hobbies')
+                if hobbies:
+                    client.hobbies.append(hobbies)
+
+                # Sports
+                sports = cleaned_data.get('sports')
+                if sports:
+                    client.sports.append(sports)
+
+                # Civil Status
+                civil_status = cleaned_data.get('civil_status')
+                if civil_status:
+                    client.civil_status = civil_status
+
+                # Civil Status Date
+                civil_status_date = cleaned_data.get('civil_status_date')
+                if civil_status_date:
+                    client.civil_status_date = civil_status_date
+
+                # Categories of Interest
+                categories_of_interest = cleaned_data.get('categories_of_interest')
+                if categories_of_interest:
+                    client.categories_of_interest.append(categories_of_interest)
+
+                # Guardar el objeto client
+                client.save()
+
+
         children_form = ChildrenForm(request.POST)
         client_place_form = ClientPlaceForm(request.POST)
-        client = Client()
-        client = Client(client_id='4848')
-        client.save()
         if client_form.is_valid() and children_form.is_valid() and client_place_form.is_valid():
             
-            return redirect('some-success-url')
+            return redirect('aditionalData')
 
         return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})

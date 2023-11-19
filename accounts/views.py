@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from clients.models import Customer 
 from .forms import SignupForm, LoginForm
 from django.contrib.auth.models import User
+from clients.mongo_models import Client
 
 def user_signup(request):
     if request.method == 'POST':

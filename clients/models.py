@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 class Customer(models.Model):
     customer_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='Customer', default=None)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    address = models.TextField()
-    date_of_birth = models.DateField()
-    email = models.EmailField(unique=True)
-    home_phone = models.CharField(max_length=20, blank=True)
-    cell_phone = models.CharField(max_length=20, blank=True)
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    address = models.TextField(null=True)
+    date_of_birth = models.DateField(null=True)
+    email = models.EmailField(unique=True, null=True)
+    home_phone = models.CharField(max_length=20, null=True)
+    cell_phone = models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"

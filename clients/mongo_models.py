@@ -20,6 +20,7 @@ class Client(Document):
     born_place = fields.EmbeddedDocumentField(ClientPlace)
     place_residence = fields.EmbeddedDocumentField(ClientPlace)
     hobbies = fields.ListField(fields.StringField())
+    sports = fields.ListField(fields.StringField())
     civil_status = fields.StringField()
     civil_status_date = fields.DateTimeField()
     couple = fields.ReferenceField('self')
