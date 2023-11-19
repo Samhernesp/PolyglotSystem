@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from clients.models import Customer 
 from .forms import UserCreationForm, LoginForm
+from clients.mongo_models import Client
 
 def user_signup(request):
     if request.method == 'POST':
@@ -23,7 +24,10 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)    
-                customer = Customer.objects.all().filter(user=user).first
+                customer = Customer.objects.filter(user=request.user).first()
+                print(customer)
+                client = Client(client_id=str(customer.customer_id))
+                client.save()
                 return redirect('/registerOrder?user={{customer.customer_id}}')
     else:
         form = LoginForm()

@@ -4,11 +4,23 @@
     <title>Registro de Datos Adicionales</title>
 </head>
 <body>
-    <form method="post">
+    <form id = "form1" method="post">
         {% csrf_token %}
+        <input type="hidden" name="form_type" value="form1">
         {{ client_form.as_p }}
-       
         <button type="submit">Register</button>
     </form>    
+    <form id = "form2" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="form2">
+        {{ children_form.as_p }}
+        <button type="submit">Register</button>
+    </form>   
+    <form id = "form3" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="form3">
+        {{ client_place_form.as_p }}
+        <button type="submit">Register</button>
+    </form>   
 </body>
 </html>
