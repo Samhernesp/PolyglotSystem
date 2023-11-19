@@ -28,7 +28,7 @@ def user_login(request):
                 print(customer)
                 client = Client(client_id=str(customer.customer_id))
                 client.save()
-                return redirect('/registerOrder?user={{customer.customer_id}}')
+                return redirect('/registerOrder')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
