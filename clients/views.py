@@ -65,8 +65,11 @@ class ClientRegistrationView(View):
         customer = Customer.objects.filter(user=request.user).first()
         client = Client.objects(client_id=str(customer.customer_id)).first()
 
+        client_form = ClientForm(request.POST)
+        client_place_form = ClientPlaceForm(request.POST)
+        children_form = ChildrenForm(request.POST)
+
         if request.POST.get("form_type") == "form1":
-            client_form = ClientForm(request.POST)
             if client_form.is_valid():
                 cleaned_data = client_form.cleaned_data
 
@@ -99,7 +102,7 @@ class ClientRegistrationView(View):
                 client.save()
 
         if request.POST.get("form_type") == "form2":    
-            children_form = ChildrenForm(request.POST)
+           
             if children_form.is_valid():
                 cleaned_data = children_form.cleaned_data
 
@@ -135,13 +138,11 @@ class ClientRegistrationView(View):
                     # Suponiendo que se espera una lista. Ajusta según sea necesario
                     child.videogames_platforms = videogames_platforms.split(',')
 
-                child.save()
                 client.children.append(child)
                 client.save()
 
 
         if request.POST.get("form_type") == "form3":    
-            client_place_form = ClientPlaceForm(request.POST)
             if client_place_form.is_valid():
                 cleaned_data = client_place_form.cleaned_data
 
@@ -172,7 +173,6 @@ class ClientRegistrationView(View):
 
 
         if request.POST.get("form_type") == "form4":    
-            client_place_form = ClientPlaceForm(request.POST)
             if client_place_form.is_valid():
                 cleaned_data = client_place_form.cleaned_data
 
@@ -201,9 +201,5 @@ class ClientRegistrationView(View):
                 client.place_residence = client_place
                 client.save()
 
-        
-
-        if client_form.is_valid() and children_form.is_valid() and client_place_form.is_valid():
-            return redirect('aditionalData')
 
         return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})

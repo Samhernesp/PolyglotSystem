@@ -24,4 +24,4 @@ class Client(Document):
     civil_status = fields.StringField()
     civil_status_date = fields.DateTimeField()
     couple = fields.ReferenceField('self')
-    categories_of_interest = fields.ListField(fields.StringField())
+    categories_of_interest = fields.ListField()

@@ -39,8 +39,8 @@ class ClientForm(forms.Form):
         required=False,
         widget=forms.DateInput(attrs={'type': 'date'})
     )
-    categories_of_interest = forms.ModelMultipleChoiceField(
-        queryset=CategoryProducts.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False
+    categories_of_interest = forms.MultipleChoiceField(
+            choices=[(category.description, category.description) for category in CategoryProducts.objects.all()],
+            widget=forms.CheckboxSelectMultiple,
+            required=False
     )
