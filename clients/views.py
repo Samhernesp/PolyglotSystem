@@ -149,6 +149,7 @@ class ClientRegistrationView(View):
                     client.categories_of_interest.append(categories_of_interest)
 
                 # Guardar el objeto client
+                client.discount = True
                 client.save()
 
         if request.POST.get("form_type") == "form2":    
