@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Customer(models.Model):
     customer_id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='Customer', default=None)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     address = models.TextField()
