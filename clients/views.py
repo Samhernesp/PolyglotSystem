@@ -64,7 +64,7 @@ class ClientRegistrationView(View):
         children_form = ChildrenForm(request.POST)
         client_place_form = ClientPlaceForm(request.POST)
         client = Client()
-        client = Client(client_id='4848')
+        client = Client(client_id='3838')
         client.save()
         if client_form.is_valid() and children_form.is_valid() and client_place_form.is_valid():
             

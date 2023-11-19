@@ -75,8 +75,9 @@ WSGI_APPLICATION = 'polyglotSystem.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 import mongoengine 
+import certifi
 uri = "mongodb+srv://client:client@polyglotsystem.eflgdph.mongodb.net/?retryWrites=true&w=majority"
-mongoengine.connect('customers',host=uri)
+mongoengine.connect('customers',host=uri,tlsCAFile=certifi.where())
 
 DATABASES = {
     'default': {
@@ -94,6 +95,7 @@ DATABASES = {
         'HOST': 'mongodb+srv://client:client@polyglotsystem.eflgdph.mongodb.net/customer',
         'RETRY_WRITES': 'true',
         'W': 'majority',
+        'SSL':'true',
     }
 }
 
