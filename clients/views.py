@@ -11,17 +11,6 @@ class RegisterOrderView(View):
     
 
     def get(self, request):
-<<<<<<< HEAD
-=======
-        # !!!!!!!!!!!!!!!!!!!
-        # HEYEHEYEHYEHEY ESTA ES LA ID DEL CUSTOMEEEEEEER
-
-        customer_id = self.request.GET.get("user")
-        print(customer_id)
-        # HEYEHEYEHYEHEY ESTA ES LA ID DEL CUSTOMEEEEEEER
-        # !!!!!!!!!!!!!!!!!!!
-
->>>>>>> 554749999833979d4c9b371d03af9e1da5a01889
         form = self.form_class()
         return render(request, 'registerOrder.html', {'form': form})
 

@@ -40,7 +40,13 @@ def user_login(request):
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user:
-                login(request, user)    
+                login(request, user)   
+                
+                customer = Customer.objects.filter(user=request.user).first()
+                print(customer)
+                client = Client(client_id=str(customer.customer_id))
+                client.save()
+
                 return redirect('/registerOrder')
     else:
         form = LoginForm()
