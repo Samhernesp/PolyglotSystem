@@ -64,20 +64,23 @@ class ClientRegistrationView(View):
         customer = Customer.objects.filter(user=request.user).first()
         client = Client.objects(client_id=str(customer.customer_id)).first()
 
+        client_form = ClientForm(request.POST)
+        client_place_form = ClientPlaceForm(request.POST)
+        children_form = ChildrenForm(request.POST)
+
         if request.POST.get("form_type") == "form1":
-            client_form = ClientForm(request.POST)
             if client_form.is_valid():
                 cleaned_data = client_form.cleaned_data
 
                 # Hobbies
                 hobbies = cleaned_data.get('hobbies')
                 if hobbies:
-                    client.hobbies.append(hobbies)
+                    client.hobbies = hobbies.split(',')
 
                 # Sports
                 sports = cleaned_data.get('sports')
                 if sports:
-                    client.sports.append(sports)
+                    client.sports = sports.split(',')
 
                 # Civil Status
                 civil_status = cleaned_data.get('civil_status')
@@ -97,11 +100,105 @@ class ClientRegistrationView(View):
                 # Guardar el objeto client
                 client.save()
 
+        if request.POST.get("form_type") == "form2":    
+           
+            if children_form.is_valid():
+                cleaned_data = children_form.cleaned_data
 
-        children_form = ChildrenForm(request.POST)
-        client_place_form = ClientPlaceForm(request.POST)
-        if client_form.is_valid() and children_form.is_valid() and client_place_form.is_valid():
-            
-            return redirect('aditionalData')
+                child = Children()  # Asumiendo que Children es una clase de modelo de documento
+
+                # Name
+                name = cleaned_data.get('name')
+                if name:
+                    child.name = name
+
+                # Born Date
+                born_date = cleaned_data.get('born_date')
+                if born_date:
+                    child.born_date = born_date
+
+                # Genre
+                genre = cleaned_data.get('genre')
+                if genre:
+                    child.genre = genre
+
+                # Study
+                # Nota: Como es un BooleanField con required=False, siempre tendrá un valor (True o False)
+                child.study = cleaned_data.get('study', False)
+
+                # Play Videogames
+                # Nota: Igual que con 'study', siempre tendrá un valor booleano
+                child.play_videogames = cleaned_data.get('play_videogames', False)
+
+                # Videogames Platforms
+                videogames_platforms = cleaned_data.get('videogames_platforms')
+
+                if videogames_platforms:
+                    # Suponiendo que se espera una lista. Ajusta según sea necesario
+                    child.videogames_platforms = videogames_platforms.split(',')
+
+                client.children.append(child)
+                client.save()
+
+
+        if request.POST.get("form_type") == "form3":    
+            if client_place_form.is_valid():
+                cleaned_data = client_place_form.cleaned_data
+
+                client_place = ClientPlace()
+
+                # City
+                city = cleaned_data.get('city')
+                if city:
+                    client_place.city = city
+
+                # State
+                state = cleaned_data.get('state')
+                if state:
+                    client_place.state = state
+
+                # Country
+                country = cleaned_data.get('country')
+                if country:
+                    client_place.country = country
+
+                # Postal Code
+                postal_code = cleaned_data.get('postal_code')
+                if postal_code:
+                    client_place.postal_code = postal_code
+
+                client.born_place = client_place
+                client.save()
+
+
+        if request.POST.get("form_type") == "form4":    
+            if client_place_form.is_valid():
+                cleaned_data = client_place_form.cleaned_data
+
+                client_place = ClientPlace()
+
+                # City
+                city = cleaned_data.get('city')
+                if city:
+                    client_place.city = city
+
+                # State
+                state = cleaned_data.get('state')
+                if state:
+                    client_place.state = state
+
+                # Country
+                country = cleaned_data.get('country')
+                if country:
+                    client_place.country = country
+
+                # Postal Code
+                postal_code = cleaned_data.get('postal_code')
+                if postal_code:
+                    client_place.postal_code = postal_code
+
+                client.place_residence = client_place
+                client.save()
+
 
         return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})

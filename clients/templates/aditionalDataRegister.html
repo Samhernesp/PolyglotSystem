@@ -1,26 +1,115 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Registro de Datos Adicionales</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
 </head>
-<body>
-    <form id = "form1" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="form1">
-        {{ client_form.as_p }}
-        <button type="submit">Register</button>
-    </form>    
-    <form id = "form2" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="form2">
-        {{ children_form.as_p }}
-        <button type="submit">Register</button>
-    </form>   
-    <form id = "form3" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="form_type" value="form3">
-        {{ client_place_form.as_p }}
-        <button type="submit">Register</button>
-    </form>   
+
+<body class="py-8 bg-gray-50 flex justify-center items-center">
+    <div class="max-w-3xl sm:m-0 bg-white flex flex-col rounded-md shadow-sm py-8 px-6 sm:px-12 w-10/12">
+
+        <h1 class="text-center mb-12 text-lg font-bold tracking-tight text-gray-900 sm:text-2xl">Add Aditional Data</h1>
+
+        <div class="flex flex-col gap-12">
+            <form id="form1" method="post">
+                <h2 class="text-md font-medium text-gray-900 mb-4">Personal information</h2>
+
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="form1">
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-6">
+                    {% for field in client_form %}
+                    {% if not field.name == 'categories_of_interest' %}
+                    <div>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">{{field.label}}</label>
+                        <div class="mt-2.5">
+                            {{field}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    <div>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">Categories of
+                            interest</label>
+                        <div class="mt-2.5 grid grid-cols-2">
+                            {% for checkbox in client_form.categories_of_interest %}
+                            <label class="flex items-center gap-2">
+                                {{ checkbox.tag }} {{ checkbox.choice_label }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="inline-flex items-center rounded-md bg-white px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    type="submit">Register</button>
+            </form>
+
+
+            <form id="form2" method="post">
+                <h2 class="text-md font-medium text-gray-900 mb-4">Children</h2>
+
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="form2">
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-6">
+                    {% for field in children_form %}
+                    <div>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">{{field.label}}</label>
+                        <div class="mt-2.5">
+                            {{field}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button
+                    class="inline-flex items-center rounded-md bg-white px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    type="submit">Register</button>
+            </form>
+
+
+            <form id="form3" method="post">
+                <h2 class="text-md font-medium text-gray-900 mb-4">Birthplace</h2>
+
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="form3">
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-6">
+                    {% for field in client_place_form %}
+                    <div>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">{{field.label}}</label>
+                        <div class="mt-2.5">
+                            {{field}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button
+                    class="inline-flex items-center rounded-md bg-white px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    type="submit">Register</button>
+            </form>
+
+
+            <form id="form4" method="post">
+                <h2 class="text-md font-medium text-gray-900 mb-4">Location Place</h2>
+
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="form4">
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 mb-6">
+                    {% for field in client_place_form %}
+                    <div>
+                        <label class="block text-sm font-semibold leading-6 text-gray-900">{{field.label}}</label>
+                        <div class="mt-2.5">
+                            {{field}}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button
+                    class="inline-flex items-center rounded-md bg-white px-6 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    type="submit">Register</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>

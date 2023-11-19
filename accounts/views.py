@@ -43,10 +43,8 @@ def user_login(request):
                 login(request, user)   
                 
                 customer = Customer.objects.filter(user=request.user).first()
-                print(customer)
                 client = Client(client_id=str(customer.customer_id))
                 client.save()
-
                 return redirect('/registerOrder')
     else:
         form = LoginForm()
