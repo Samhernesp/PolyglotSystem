@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from clients.models import Customer 
 from .forms import SignupForm, LoginForm
@@ -12,7 +13,7 @@ def user_signup(request):
         if form.is_valid():
             user = User()
             user.username = form.cleaned_data['username']
-            user.set_password(form.cleaned_data['password1'])
+            user.set_password(form.cleaned_data['password'])
             user.save()
 
             customer = Customer()
@@ -42,10 +43,16 @@ def user_login(request):
             if user:
                 login(request, user)   
                 
+
                 customer = Customer.objects.filter(user=request.user).first()
-                client = Client(client_id=str(customer.customer_id))
-                client.save()
-                return redirect('/registerOrder')
+                client = Client.objects(client_id=str(customer.customer_id)).first()
+                if client is None:
+                    client = Client(client_id=str(customer.customer_id))
+                    client.save()
+                    return redirect('/registerOrder')
+
+                else:
+                    return redirect('/registerOrder')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})

@@ -23,5 +23,6 @@ class Client(Document):
     sports = fields.ListField(fields.StringField())
     civil_status = fields.StringField()
     civil_status_date = fields.DateTimeField()
-    couple = fields.ReferenceField('self')
+    couple_id = fields.StringField()
+    discount = fields.BooleanField()
     categories_of_interest = fields.ListField()

@@ -5,8 +5,8 @@ class SignupForm(forms.Form):
     username = forms.CharField(max_length=100, widget=forms.TextInput(attrs=inputStyle))
     email = forms.EmailField(widget=forms.EmailInput(attrs=inputStyle))
 
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs=inputStyle))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs=inputStyle))
+    password = forms.CharField(widget=forms.PasswordInput(attrs=inputStyle))
+    password_confirmation = forms.CharField(widget=forms.PasswordInput(attrs=inputStyle))
 
     first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=inputStyle))
     last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs=inputStyle))

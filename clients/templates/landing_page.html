@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static './css/landing_style.css' %}">
+
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img width="500" height="500" src="{% static './img/logo.png' %}" alt="">
+        </div>
+
+
+        {% if user.is_authenticated %}
+        <nav>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'aditionalData' %}">Información Adicional</a></li>
+            </ul>
+        </nav>
+
+        <a class="btn" href="{% url 'logout' %}"><button>Log Out</button></a>
+
+
+
+        {% else %}
+        <nav>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'login' %}">Login</a></li>
+            </ul>
+        </nav>
+
+        <a class="btn" href="{% url 'signup' %}"><button>Sign Up</button></a>
+
+        {% endif %}
+
+
+
+    </header>
+
+
+    <div class="wrapper">
+        <img class="img-logo" src="{% static './img/products.avif' %}" alt="">
+        <div class="text-box">
+            <h2>BC Electronics</h2>
+            <p style="color: black;">¡Bienvenido a ABC Electronics, tu destino definitivo para la última tecnología y
+                los productos electrónicos más innovadores! En ABC Electronics, nos enorgullece ofrecerte una amplia
+                gama de dispositivos electrónicos de alta calidad.</p>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+</body>
+
+</html>

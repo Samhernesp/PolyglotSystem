@@ -4,8 +4,52 @@ from .forms import OrderForm, OrderDetailForm
 from .models import OrderDetail, Orders, Customer
 from .forms import ClientForm, ChildrenForm, ClientPlaceForm
 from .mongo_models import Client, Children, ClientPlace
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
+@method_decorator(login_required, name='dispatch')
+class AddCoupleView(View):
+    template_name = 'aditionalDataRegister.html'
+
+    def get(self, request):
+        current_user = request.user
+
+        clients = Customer.objects.exclude(user=current_user)
+
+        context = {
+            'clients': clients,
+        }
+
+        return render(request, 'register_couple.html', context)
+    
+    def post(self,request):
+        selected_client_id = request.POST.get('client_select')
+        if selected_client_id is None:
+            clients = Customer.objects.all()
+
+            context = {
+                'clients': clients,
+            }
+            return render(request, 'register_couple.html', context)
+        else:
+            customer = Customer.objects.filter(user=request.user).first()
+            client = Client.objects(client_id=str(customer.customer_id)).first()
+            client.couple_id = selected_client_id
+            client.discount = True
+            client.save()
+            client_form = ClientForm()
+            children_form = ChildrenForm()
+            client_place_form = ClientPlaceForm()
+            return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})
+
+class LandingPageView(View):
+    def get(self, request):
+        return render(request, 'landing_page.html')
+    
+
+
+@method_decorator(login_required, name='dispatch')
 class RegisterOrderView(View):
     form_class = OrderForm
     
@@ -29,6 +73,7 @@ class RegisterOrderView(View):
             return redirect('url_a_la_siguiente_vista')
         return render(request, self.template_name, {'form': form})
 
+@method_decorator(login_required, name='dispatch')
 class OrderDetailView(View):
     form_class = OrderDetailForm
 
@@ -50,6 +95,8 @@ class OrderDetailView(View):
             return redirect('url_a_la_siguiente_vista')
         return render(request, self.template_name, {'form': form})
 
+
+@method_decorator(login_required, name='dispatch')
 class ClientRegistrationView(View):
     template_name = 'aditionalDataRegister.html'
 
@@ -76,21 +123,25 @@ class ClientRegistrationView(View):
                 hobbies = cleaned_data.get('hobbies')
                 if hobbies:
                     client.hobbies = hobbies.split(',')
+                    
 
                 # Sports
                 sports = cleaned_data.get('sports')
                 if sports:
                     client.sports = sports.split(',')
 
+
                 # Civil Status
                 civil_status = cleaned_data.get('civil_status')
                 if civil_status:
                     client.civil_status = civil_status
 
+
                 # Civil Status Date
                 civil_status_date = cleaned_data.get('civil_status_date')
                 if civil_status_date:
                     client.civil_status_date = civil_status_date
+
 
                 # Categories of Interest
                 categories_of_interest = cleaned_data.get('categories_of_interest')
