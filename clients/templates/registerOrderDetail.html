@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Detalle de Orden</title>
+
 </head>
 <body>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Registrar Detalle de Orden</button>
-</form>
+    <form method="post">
+        {% csrf_token %}
+        <label for="{{ form.order_number.id_for_label }}">Número de Orden:</label>
+        {{ form.order_number }}
+        <label for="{{ form.product_id.id_for_label }}">Producto:</label>
+        {{ form.product_id }}
+        <label for="{{ form.quantity.id_for_label }}">Cantidad:</label>
+        {{ form.quantity }}
+        <label for="{{ form.price.id_for_label }}">Precio:</label>
+        {{ form.price }}
+        <button type="submit">Registrar Detalle de Orden</button>
+        <a href="{% url 'aditionalData' %}">Añadir Información Adicional</a>
+    </form>
 </body>
 </html>
