@@ -108,7 +108,8 @@ class OrderDetailView(View):
             orderDetail.quantity = form.cleaned_data['quantity']
 
             product = Products.objects.filter(product_id=orderDetail.product_id.product_id).first()
-            
+            discount = 0
+
             if client:
                 if client.discount:
                     price = float(product.selling_price) * int(orderDetail.quantity)
@@ -123,7 +124,7 @@ class OrderDetailView(View):
                 price = float(product.selling_price) * int(orderDetail.quantity)
                 orderDetail.price = price   
             
-            messages.success(request,f"Order added. Price ${price} Discount of ${discount if client.discount else 0}")
+            messages.success(request,f"Order added. Price ${orderDetail.price} Discount of ${discount}")
 
             orderDetail.save(using='default')
             
