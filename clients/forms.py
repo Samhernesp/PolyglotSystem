@@ -20,6 +20,8 @@ class OrderDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
             super(OrderDetailForm, self).__init__(*args, **kwargs)
             for visible in self.visible_fields():
+
+
                 visible.field.widget.attrs['class'] = inputStyle
 
 class ChildrenForm(forms.Form):

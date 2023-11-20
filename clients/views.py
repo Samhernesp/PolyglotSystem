@@ -6,8 +6,8 @@ from .forms import ClientForm, ChildrenForm, ClientPlaceForm
 from .mongo_models import Client, Children, ClientPlace
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 from datetime import date
-
 
 @method_decorator(login_required, name='dispatch')
 class AddCoupleView(View):
@@ -78,11 +78,12 @@ class RegisterOrderView(View):
 class OrderDetailView(View):
     form_class = OrderDetailForm
 
+
     def get(self, request):
         form = self.form_class()
         customer = Customer.objects.filter(user=request.user).first()
         orders = Orders.objects.filter(customer_id=customer.customer_id)
-        
+    
         return render(request, 'registerOrderDetail.html', {'form': form})
 
     def post(self, request):
@@ -122,7 +123,8 @@ class OrderDetailView(View):
                 price = float(product.selling_price) * int(orderDetail.quantity)
                 orderDetail.price = price   
             
-            
+            messages.success(request,f"Order added. Price ${price} Discount of ${discount if client.discount else 0}")
+
             orderDetail.save(using='default')
             
             return redirect('orderDetail')
