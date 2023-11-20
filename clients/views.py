@@ -176,6 +176,7 @@ class ClientRegistrationView(View):
                 # Guardar el objeto client
                 client.discount = True
                 client.save()
+                client_form = ClientForm()
 
         if request.POST.get("form_type") == "form2":    
            
@@ -216,6 +217,7 @@ class ClientRegistrationView(View):
 
                 client.children.append(child)
                 client.save()
+                children_form = ChildrenForm()
 
 
         if request.POST.get("form_type") == "form3":    
@@ -246,6 +248,7 @@ class ClientRegistrationView(View):
 
                 client.born_place = client_place
                 client.save()
+                client_place_form = ClientPlaceForm()
 
 
         if request.POST.get("form_type") == "form4":    
@@ -276,6 +279,8 @@ class ClientRegistrationView(View):
 
                 client.place_residence = client_place
                 client.save()
+                client_place_form = ClientPlaceForm()
+
 
 
         return render(request, self.template_name, {'client_form': client_form, 'children_form': children_form, 'client_place_form': client_place_form})
