@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from .forms import OrderForm, OrderDetailForm
-from .models import OrderDetail, Orders, Customer
+from .models import OrderDetail, Orders, Customer,Products
 from .forms import ClientForm, ChildrenForm, ClientPlaceForm
 from .mongo_models import Client, Children, ClientPlace
 from django.contrib.auth.decorators import login_required
@@ -62,16 +62,16 @@ class RegisterOrderView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             order = Orders()
-            order.product_id = form.cleaned_data['product_id']
-            order.category_code = form.cleaned_data['category_code']
-            order.description = form.cleaned_data['description']
-            order.quantity_available = form.cleaned_data['quantity_available']
-            order.cost = form.cleaned_data['cost']
-            order.selling_price = form.cleaned_data['selling_price']
+            order.customer_id = form.cleaned_data['customer_id']
+            order.order_date = form.cleaned_data['order_date']
+            order.shipped_date = form.cleaned_data['shipped_date']
+            order.payment_date = form.cleaned_data['payment_date']
             order.save(using='default')
-
-            return redirect('url_a_la_siguiente_vista')
-        return render(request, self.template_name, {'form': form})
+            form = self.form_class()
+            return render(request, 'registerOrder.html', {'form': form})
+        
+        print(form.errors)
+        return render(request, 'registerOrder.html', {'form': form})
 
 @method_decorator(login_required, name='dispatch')
 class OrderDetailView(View):
@@ -86,13 +86,35 @@ class OrderDetailView(View):
         if form.is_valid():
             orderDetail = OrderDetail()
             orderDetail.order_number = form.cleaned_data['order_number']
+
+            order = Orders.objects.filter(order_number=orderDetail.order_number.order_number).first()
+            customer_id = order.customer_id.customer_id
+            client = Client.objects(client_id=str(customer_id)).first()
+                    
             orderDetail.product_id = form.cleaned_data['product_id']
             orderDetail.quantity = form.cleaned_data['quantity']
-            orderDetail.price = form.cleaned_data['price']
+
+            product = Products.objects.filter(product_id=orderDetail.product_id.product_id).first()
+
+            if client:
+                print("entrooo")
+                if client.discount:
+                    price = float(product.selling_price) * int(orderDetail.quantity)
+
+                    discount = float(product.selling_price) * 0.10
+                    
+                    orderDetail.price = price - discount
+                else:
+                    price = float(product.selling_price) * int(orderDetail.quantity)
+                    orderDetail.price = price   
+            else:       
+                price = float(product.selling_price) * int(orderDetail.quantity)
+                orderDetail.price = price   
+            
             
             orderDetail.save(using='default')
             
-            return redirect('url_a_la_siguiente_vista')
+            return redirect('orderDetail')
         return render(request, self.template_name, {'form': form})
 
 
