@@ -6,6 +6,7 @@ from .forms import ClientForm, ChildrenForm, ClientPlaceForm
 from .mongo_models import Client, Children, ClientPlace
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from datetime import date
 
 
 @method_decorator(login_required, name='dispatch')
@@ -89,7 +90,14 @@ class OrderDetailView(View):
         if form.is_valid():
 
             customer = Customer.objects.filter(user=request.user).first()
-            order = Orders.objects.filter(customer_id=customer.customer_id).first()
+    
+            order = Orders()
+            order.customer_id = customer
+            order.order_date = date.today()
+            order.shipped_date = date.today()
+            order.payment_date = date.today()
+            order.save(using='default')
+
             orderDetail = OrderDetail()
             orderDetail.order_number = order
 
