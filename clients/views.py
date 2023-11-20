@@ -79,25 +79,28 @@ class OrderDetailView(View):
 
     def get(self, request):
         form = self.form_class()
+        customer = Customer.objects.filter(user=request.user).first()
+        orders = Orders.objects.filter(customer_id=customer.customer_id)
+        
         return render(request, 'registerOrderDetail.html', {'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            orderDetail = OrderDetail()
-            orderDetail.order_number = form.cleaned_data['order_number']
 
-            order = Orders.objects.filter(order_number=orderDetail.order_number.order_number).first()
-            customer_id = order.customer_id.customer_id
-            client = Client.objects(client_id=str(customer_id)).first()
-                    
+            customer = Customer.objects.filter(user=request.user).first()
+            order = Orders.objects.filter(customer_id=customer.customer_id).first()
+            orderDetail = OrderDetail()
+            orderDetail.order_number = order
+
+            client = Client.objects(client_id=str(customer.customer_id)).first()
+            
             orderDetail.product_id = form.cleaned_data['product_id']
             orderDetail.quantity = form.cleaned_data['quantity']
 
             product = Products.objects.filter(product_id=orderDetail.product_id.product_id).first()
-
+            
             if client:
-                print("entrooo")
                 if client.discount:
                     price = float(product.selling_price) * int(orderDetail.quantity)
 

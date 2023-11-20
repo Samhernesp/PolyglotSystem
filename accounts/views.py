@@ -49,10 +49,10 @@ def user_login(request):
                 if client is None:
                     client = Client(client_id=str(customer.customer_id))
                     client.save()
-                    return redirect('/registerOrder')
+                    return redirect('/')
 
                 else:
-                    return redirect('/registerOrder')
+                    return redirect('/')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})

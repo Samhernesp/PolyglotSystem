@@ -15,7 +15,7 @@ class OrderForm(forms.ModelForm):
 class OrderDetailForm(forms.ModelForm):
     class Meta:
         model = OrderDetail
-        fields = ['order_number', 'product_id', 'quantity']
+        fields = ['product_id', 'quantity']
 
     def __init__(self, *args, **kwargs):
             super(OrderDetailForm, self).__init__(*args, **kwargs)
